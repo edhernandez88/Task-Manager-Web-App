@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Social Frontend</title>
+    <style>body{font-family:system-ui,Arial;margin:2rem} code{background:#eee;padding:2px 4px;border-radius:4px}</style>
+  </head>
+  <body>
+    <h1>Frontend is live ✅</h1>
+    <p>API base: <code id="api"></code></p>
+    <p>Health: <code id="health">loading…</code></p>
+    <h3>Posts</h3>
+    <ul id="posts"></ul>
+    <script>
+      const API = "https://social-backend-7vov4z2hva-uc.a.run.app";
+      document.getElementById("api").textContent = API;
+      async function go(){
+        try{
+          const h = await fetch(`${API}/api/health`).then(r=>r.json());
+          document.getElementById('health').textContent = JSON.stringify(h);
+          const posts = await fetch(`${API}/api/posts`).then(r=>r.json());
+          document.getElementById('posts').innerHTML = posts.map(p=>`<li>#${p.id}: ${p.text}</li>`).join("");
+        }catch(e){ document.getElementById('health').textContent = 'error'; }
+      }
+      go();
+    </script>
+  </body>
+</html>
